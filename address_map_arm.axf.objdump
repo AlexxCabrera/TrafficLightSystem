@@ -1,0 +1,359 @@
+
+E:/Education/Fresno State/Fall 20-21/ECE 118/Lab/Final Project/address_map_arm.axf:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+00000000 <__cs3_interrupt_vector>:
+        .global _start
+
+
+_start:
+
+	LDR		R0, =JP2_BASE
+   0:	e59f01e0 	ldr	r0, [pc, #480]	; 1e8 <Check+0x14>
+	LDR		R2,	=SW_BASE
+   4:	e59f21e0 	ldr	r2, [pc, #480]	; 1ec <Check+0x18>
+
+	LDR		R1, =0x0F0F0F1E //working properly with B1 being D5
+   8:	e59f11e0 	ldr	r1, [pc, #480]	; 1f0 <Check+0x1c>
+	STR		R1,	[R0,#4]
+   c:	e5801004 	str	r1, [r0, #4]
+
+	LDR		R1, =0x02020202
+  10:	e59f11dc 	ldr	r1, [pc, #476]	; 1f4 <Check+0x20>
+	STR		R1,	[R0]
+  14:	e5801000 	str	r1, [r0]
+
+	
+	BL		Delay1
+  18:	eb00000d 	bl	54 <Delay1>
+
+0000001c <CODE>:
+CODE:	
+	BL		Pattern1
+  1c:	eb00001a 	bl	8c <Pattern1>
+	
+	BL		Check
+  20:	eb00006b 	bl	1d4 <Check>
+
+	BL		Delay1
+  24:	eb00000a 	bl	54 <Delay1>
+
+	BL		Pattern2
+  28:	eb000021 	bl	b4 <Pattern2>
+
+	BL		Check
+  2c:	eb000068 	bl	1d4 <Check>
+
+	BL		Delay1
+  30:	eb000007 	bl	54 <Delay1>
+
+	BL		Pattern4
+  34:	eb000034 	bl	10c <Pattern4>
+
+	BL		Check
+  38:	eb000065 	bl	1d4 <Check>
+
+//	BL		LIGHTSOUT
+
+B	CODE
+  3c:	eafffff6 	b	1c <CODE>
+
+00000040 <Delay>:
+
+Delay:
+	PUSH	{LR}
+  40:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+	movt	R5, #0xAF50
+  44:	e34a5f50 	movt	r5, #44880	; 0xaf50
+
+00000048 <LOOPL>:
+
+LOOPL:
+
+	SUBS	R5,#1
+  48:	e2555001 	subs	r5, r5, #1
+	BNE	LOOPL
+  4c:	1afffffd 	bne	48 <LOOPL>
+	POP		{PC}
+  50:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+00000054 <Delay1>:
+
+Delay1:
+	PUSH	{LR}
+  54:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+	movt	R5, #0x5F50
+  58:	e3455f50 	movt	r5, #24400	; 0x5f50
+
+0000005c <LOOPL1>:
+LOOPL1:
+	SUBS	R5,#1
+  5c:	e2555001 	subs	r5, r5, #1
+	BNE	LOOPL1
+  60:	1afffffd 	bne	5c <LOOPL1>
+	POP		{PC}
+  64:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+00000068 <Delay2>:
+
+Delay2:
+	PUSH	{LR}
+  68:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+	movt	R5, #0x1F50
+  6c:	e3415f50 	movt	r5, #8016	; 0x1f50
+
+00000070 <LOOPL2>:
+LOOPL2:
+	SUBS	R5,#1
+  70:	e2555001 	subs	r5, r5, #1
+	BNE	LOOPL1
+  74:	1afffff8 	bne	5c <LOOPL1>
+	POP		{PC}
+  78:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+0000007c <LIGHTSOUT>:
+
+LIGHTSOUT:
+PUSH {LR}
+  7c:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+	LDR		R1, =0x0000000
+  80:	e3a01000 	mov	r1, #0
+	STR		R1,	[R0]
+  84:	e5801000 	str	r1, [r0]
+POP {PC}
+  88:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+0000008c <Pattern1>:
+
+Pattern1: //Clockwise starting at 12:00 (Green, Red, Green, Red)
+PUSH {LR}
+  8c:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    LDR		R1, =0x08020802
+  90:	e59f1160 	ldr	r1, [pc, #352]	; 1f8 <Check+0x24>
+	STR		R1,	[R0]
+  94:	e5801000 	str	r1, [r0]
+	BL		Delay
+  98:	ebffffe8 	bl	40 <Delay>
+	LDR		R1, =0x04020402
+  9c:	e59f1158 	ldr	r1, [pc, #344]	; 1fc <Check+0x28>
+	STR		R1,	[R0]
+  a0:	e5801000 	str	r1, [r0]
+	BL		Delay1
+  a4:	ebffffea 	bl	54 <Delay1>
+	LDR		R1, =0x02020202
+  a8:	e59f1144 	ldr	r1, [pc, #324]	; 1f4 <Check+0x20>
+	STR		R1,	[R0]
+  ac:	e5801000 	str	r1, [r0]
+POP {PC}
+  b0:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+000000b4 <Pattern2>:
+
+Pattern2://	(Red, Green, Red, Green)
+PUSH {LR}
+  b4:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    LDR		R1, =0x02080208
+  b8:	e59f1140 	ldr	r1, [pc, #320]	; 200 <Check+0x2c>
+	STR		R1,	[R0]
+  bc:	e5801000 	str	r1, [r0]
+	BL		Delay
+  c0:	ebffffde 	bl	40 <Delay>
+	LDR		R1, =0x02040204
+  c4:	e59f1138 	ldr	r1, [pc, #312]	; 204 <pattern2+0x2>
+	STR		R1,	[R0]
+  c8:	e5801000 	str	r1, [r0]
+	BL		Delay1
+  cc:	ebffffe0 	bl	54 <Delay1>
+	LDR		R1, =0x02020202
+  d0:	e59f111c 	ldr	r1, [pc, #284]	; 1f4 <Check+0x20>
+	STR		R1,	[R0]
+  d4:	e5801000 	str	r1, [r0]
+POP {PC}
+  d8:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+000000dc <Pattern3>:
+
+Pattern3:// (Blinking Reds / malfunction / maintanace )
+//PUSH {LR}
+	LDR		R7,	[R2]
+  dc:	e5927000 	ldr	r7, [r2]
+	CMP		R7,	#1
+  e0:	e3570001 	cmp	r7, #1
+	POPNE	{PC}	//CODE
+  e4:	149df004 	popne	{pc}		; (ldrne pc, [sp], #4)
+
+    LDR		R1, =0x02020202 //long time on
+  e8:	e59f1104 	ldr	r1, [pc, #260]	; 1f4 <Check+0x20>
+	STR		R1,	[R0]
+  ec:	e5801000 	str	r1, [r0]
+	BL		Delay2
+  f0:	ebffffdc 	bl	68 <Delay2>
+	LDR		R1, =0x00000000// short blink
+  f4:	e3a01000 	mov	r1, #0
+	STR		R1,	[R0]
+  f8:	e5801000 	str	r1, [r0]
+	BL		Delay2
+  fc:	ebffffd9 	bl	68 <Delay2>
+    LDR		R1, =0x02020202 //long time on
+ 100:	e59f10ec 	ldr	r1, [pc, #236]	; 1f4 <Check+0x20>
+	STR		R1,	[R0]
+ 104:	e5801000 	str	r1, [r0]
+
+	B	Pattern3
+ 108:	eafffff3 	b	dc <Pattern3>
+
+0000010c <Pattern4>:
+
+//POP {PC}
+
+Pattern4:// All reds and Blues, Blues will blink before turning off
+PUSH {LR}
+ 10c:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+	LDR		R6,	=HEX3_HEX0_BASE
+ 110:	e59f60f0 	ldr	r6, [pc, #240]	; 208 <pattern2+0x6>
+    LDR		R1, =0x02020202
+ 114:	e59f10d8 	ldr	r1, [pc, #216]	; 1f4 <Check+0x20>
+	STR		R1,	[R0]
+ 118:	e5801000 	str	r1, [r0]
+	BL		Delay1
+ 11c:	ebffffcc 	bl	54 <Delay1>
+
+	LDR		R1, =0x03030312
+ 120:	e59f10e4 	ldr	r1, [pc, #228]	; 20c <pattern2+0xa>
+	STR		R1,	[R0]
+ 124:	e5801000 	str	r1, [r0]
+	BL		Delay
+ 128:	ebffffc4 	bl	40 <Delay>
+
+	LDR		R4,	=0x5
+ 12c:	e3a04005 	mov	r4, #5
+
+00000130 <Pattern4b>:
+Pattern4b:
+
+	LDR	R6, =HEX3_HEX0_BASE
+ 130:	e59f60d0 	ldr	r6, [pc, #208]	; 208 <pattern2+0x6>
+
+	CMP	R4, #5
+ 134:	e3540005 	cmp	r4, #5
+	LDR	R1,	=FIVE
+ 138:	e3a0106d 	mov	r1, #109	; 0x6d
+	STREQ	R1, [R6]
+ 13c:	05861000 	streq	r1, [r6]
+
+	LDR		R1, =0x02020202
+ 140:	e59f10ac 	ldr	r1, [pc, #172]	; 1f4 <Check+0x20>
+	STR		R1,	[R0]
+ 144:	e5801000 	str	r1, [r0]
+	BL		Delay2
+ 148:	ebffffc6 	bl	68 <Delay2>
+
+	LDR		R1, =0x03030312
+ 14c:	e59f10b8 	ldr	r1, [pc, #184]	; 20c <pattern2+0xa>
+	STR		R1,	[R0]
+ 150:	e5801000 	str	r1, [r0]
+	BL		Delay2
+ 154:	ebffffc3 	bl	68 <Delay2>
+
+	LDR		R1, =0x02020202
+ 158:	e59f1094 	ldr	r1, [pc, #148]	; 1f4 <Check+0x20>
+	STR		R1,	[R0]
+ 15c:	e5801000 	str	r1, [r0]
+
+	SUBS	R4,	#1
+ 160:	e2544001 	subs	r4, r4, #1
+	BL		UpdateTimer
+ 164:	eb000002 	bl	174 <UpdateTimer>
+	BNE		Pattern4b
+ 168:	1afffff0 	bne	130 <Pattern4b>
+	BL		Delay1
+ 16c:	ebffffb8 	bl	54 <Delay1>
+POP {PC}
+ 170:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+00000174 <UpdateTimer>:
+	
+UpdateTimer:
+PUSH {LR}
+ 174:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+	LDR	R6, =HEX3_HEX0_BASE
+ 178:	e59f6088 	ldr	r6, [pc, #136]	; 208 <pattern2+0x6>
+
+	CMP	R4, #5
+ 17c:	e3540005 	cmp	r4, #5
+	LDR	R1,	=FIVE
+ 180:	e3a0106d 	mov	r1, #109	; 0x6d
+	STREQ	R1, [R6]
+ 184:	05861000 	streq	r1, [r6]
+
+	CMP	R4, #4
+ 188:	e3540004 	cmp	r4, #4
+	LDR	R1,	=FOUR
+ 18c:	e3a01066 	mov	r1, #102	; 0x66
+	STREQ	R1, [R6]
+ 190:	05861000 	streq	r1, [r6]
+
+	CMP	R4, #3
+ 194:	e3540003 	cmp	r4, #3
+	LDR	R1,	=THREE
+ 198:	e3a0104f 	mov	r1, #79	; 0x4f
+	STREQ	R1, [R6]
+ 19c:	05861000 	streq	r1, [r6]
+
+	CMP	R4, #2
+ 1a0:	e3540002 	cmp	r4, #2
+	LDR	R1,	=TWO
+ 1a4:	e3a0105b 	mov	r1, #91	; 0x5b
+	STREQ	R1, [R6]
+ 1a8:	05861000 	streq	r1, [r6]
+
+	CMP	R4, #1
+ 1ac:	e3540001 	cmp	r4, #1
+	LDR	R1,	=ONE
+ 1b0:	e3a01006 	mov	r1, #6
+	STREQ	R1, [R6]
+ 1b4:	05861000 	streq	r1, [r6]
+
+	CMP	R4, #0
+ 1b8:	e3540000 	cmp	r4, #0
+	LDR	R1,	=ZERO
+ 1bc:	e3a0103f 	mov	r1, #63	; 0x3f
+	STREQ	R1, [R6]
+ 1c0:	05861000 	streq	r1, [r6]
+	BLEQ	Delay1
+ 1c4:	0bffffa2 	bleq	54 <Delay1>
+	LDR	R1,	=0x0
+ 1c8:	e3a01000 	mov	r1, #0
+	STREQ	R1, [R6]
+ 1cc:	05861000 	streq	r1, [r6]
+
+POP {PC}
+ 1d0:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+000001d4 <Check>:
+
+	
+Check:
+PUSH {LR}
+ 1d4:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+
+	LDR		R7,	[R2]
+ 1d8:	e5927000 	ldr	r7, [r2]
+	CMP		R7,	#1
+ 1dc:	e3570001 	cmp	r7, #1
+	BLEQ	Pattern3
+ 1e0:	0bffffbd 	bleq	dc <Pattern3>
+
+ 1e4:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+ 1e8:	ff200070 	.word	0xff200070
+ 1ec:	ff200040 	.word	0xff200040
+ 1f0:	0f0f0f1e 	.word	0x0f0f0f1e
+ 1f4:	02020202 	.word	0x02020202
+ 1f8:	08020802 	.word	0x08020802
+ 1fc:	04020402 	.word	0x04020402
+ 200:	02080208 	.word	0x02080208
+ 204:	02040204 	.word	0x02040204
+ 208:	ff200020 	.word	0xff200020
+ 20c:	03030312 	.word	0x03030312
